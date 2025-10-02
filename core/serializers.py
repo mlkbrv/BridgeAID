@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from decimal import Decimal
+from django.core.validators import MinValueValidator
 from .models import (
     Employer, CandidateProfile, Vacancy, Application, Document, 
     VisaCase, HousingListing, RelocationSuggestion, ExpenseEstimate, 
@@ -142,7 +143,7 @@ class HousingListingSerializer(serializers.ModelSerializer):
     provider_name = serializers.CharField(max_length=255, required=False, allow_blank=True, allow_null=True)
     address = serializers.CharField(max_length=512)
     city = serializers.CharField(max_length=128)
-    price = serializers.DecimalField(max_digits=10, decimal_places=2, validators=[serializers.MinValueValidator(Decimal('0.0'))])
+    price = serializers.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.0'))])
     currency = serializers.ChoiceField(choices=[
         ('EUR', 'Euro'),
         ('TRY', 'Turkish Lira'),

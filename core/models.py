@@ -2,7 +2,7 @@ import uuid
 from django.db import models
 from decimal import Decimal
 from django.conf import settings
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 
