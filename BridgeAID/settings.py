@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0169d=sh6pvu_14zd5b0gejs-8)xqap(5%$o!yh-x*08yo(p82
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.165', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'users.apps.UsersConfig',
     'phonenumber_field',
     'rest_framework',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,12 +82,8 @@ WSGI_APPLICATION = 'BridgeAID.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bridgeaid',
-        'USER': 'bridgeaid',
-        'PASSWORD': 'bridgeaid123',
-        'HOST': 'db',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -159,3 +157,27 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": True,
     'USERNAME_FIELD': 'email',
 }
+
+# CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://192.168.0.165:3000",
+    "exp://192.168.0.165:19000",
+    "exp://localhost:19000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True  # Для разработки
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]

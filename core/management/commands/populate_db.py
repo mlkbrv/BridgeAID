@@ -13,18 +13,18 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = 'Популирует базу данных тестовыми данными'
+    help = 'Populates the database with test data'
 
     def add_arguments(self, parser):
         parser.add_argument(
             '--clear',
             action='store_true',
-            help='Очистить существующие данные перед созданием новых',
+            help='Clear existing data before creating new ones',
         )
 
     def handle(self, *args, **options):
         if options['clear']:
-            self.stdout.write('Очистка существующих данных...')
+            self.stdout.write('Clearing existing data...')
             AIAssistantInteraction.objects.all().delete()
             ExpenseEstimate.objects.all().delete()
             RelocationSuggestion.objects.all().delete()
@@ -36,11 +36,11 @@ class Command(BaseCommand):
             CandidateProfile.objects.all().delete()
             Employer.objects.all().delete()
             User.objects.filter(is_superuser=False).delete()
-            self.stdout.write(self.style.SUCCESS('Данные очищены'))
+            self.stdout.write(self.style.SUCCESS('Data cleared'))
 
-        self.stdout.write('Создание тестовых данных...')
+        self.stdout.write('Creating test data...')
         
-        # Создание пользователей
+        # Creating users
         users_data = [
             {
                 'email': 'employer1@example.com',
@@ -96,9 +96,9 @@ class Command(BaseCommand):
                 user.set_password('testpass123')
                 user.save()
             users.append(user)
-            self.stdout.write(f'Создан пользователь: {user.email}')
+            self.stdout.write(f'Created user: {user.email}')
         
-        # Создание работодателей
+        # Creating employers
         employers_data = [
             {
                 'user': users[0],
@@ -123,29 +123,29 @@ class Command(BaseCommand):
                 defaults=emp_data
             )
             employers.append(employer)
-            self.stdout.write(f'Создан работодатель: {employer.company_name}')
+            self.stdout.write(f'Created employer: {employer.company_name}')
         
-        # Создание профилей кандидатов
+        # Creating candidate profiles
         candidates_data = [
             {
                 'user': users[2],
                 'phone': '+905551234567',
                 'current_country': 'TR',
-                'resume': 'Опытный разработчик с 5+ лет опыта в Python и Django',
+                'resume': 'Experienced developer with 5+ years of experience in Python and Django',
                 'skills': ['Python', 'Django', 'React', 'PostgreSQL', 'Docker'],
             },
             {
                 'user': users[3],
                 'phone': '+905551234568',
                 'current_country': 'TR',
-                'resume': 'Frontend разработчик с опытом в React и Vue.js',
+                'resume': 'Frontend developer with experience in React and Vue.js',
                 'skills': ['JavaScript', 'React', 'Vue.js', 'CSS', 'HTML'],
             },
             {
                 'user': users[4],
                 'phone': '+905551234569',
                 'current_country': 'TR',
-                'resume': 'Full-stack разработчик с опытом в веб-разработке',
+                'resume': 'Full-stack developer with experience in web development',
                 'skills': ['Python', 'JavaScript', 'Node.js', 'MongoDB', 'AWS'],
             },
         ]
@@ -157,14 +157,14 @@ class Command(BaseCommand):
                 defaults=cand_data
             )
             candidates.append(candidate)
-            self.stdout.write(f'Создан кандидат: {candidate.user.get_full_name()}')
+            self.stdout.write(f'Created candidate: {candidate.user.get_full_name()}')
         
-        # Создание вакансий
+        # Creating vacancies
         vacancies_data = [
             {
                 'employer': employers[0],
                 'title': 'Senior Python Developer',
-                'description': 'Ищем опытного Python разработчика для работы над высоконагруженными системами',
+                'description': 'Looking for an experienced Python developer to work on high-load systems',
                 'salary': Decimal('5000.00'),
                 'currency': 'EUR',
                 'location': 'Nicosia, Cyprus',
@@ -175,7 +175,7 @@ class Command(BaseCommand):
             {
                 'employer': employers[0],
                 'title': 'Frontend Developer',
-                'description': 'Требуется Frontend разработчик для создания современных веб-интерфейсов',
+                'description': 'Need a Frontend developer to create modern web interfaces',
                 'salary': Decimal('4000.00'),
                 'currency': 'EUR',
                 'location': 'Limassol, Cyprus',
@@ -186,7 +186,7 @@ class Command(BaseCommand):
             {
                 'employer': employers[1],
                 'title': 'Full Stack Developer',
-                'description': 'Полный цикл разработки веб-приложений с использованием современных технологий',
+                'description': 'Full cycle of web application development using modern technologies',
                 'salary': Decimal('4500.00'),
                 'currency': 'EUR',
                 'location': 'Paphos, Cyprus',
@@ -204,35 +204,35 @@ class Command(BaseCommand):
                 defaults=vac_data
             )
             vacancies.append(vacancy)
-            self.stdout.write(f'Создана вакансия: {vacancy.title}')
+            self.stdout.write(f'Created vacancy: {vacancy.title}')
         
-        # Создание заявок
+        # Creating applications
         applications_data = [
             {
                 'vacancy': vacancies[0],
                 'candidate': candidates[0],
-                'cover_letter': 'Заинтересован в позиции Senior Python Developer. Имею опыт работы с Django и PostgreSQL.',
+                'cover_letter': 'Interested in the Senior Python Developer position. I have experience with Django and PostgreSQL.',
                 'status': 'applied',
                 'score': 85.5,
             },
             {
                 'vacancy': vacancies[0],
                 'candidate': candidates[2],
-                'cover_letter': 'Хотел бы принять участие в проекте. Опыт работы с Python и веб-разработкой.',
+                'cover_letter': 'Would like to participate in the project. Experience with Python and web development.',
                 'status': 'screening',
                 'score': 78.0,
             },
             {
                 'vacancy': vacancies[1],
                 'candidate': candidates[1],
-                'cover_letter': 'Отличная возможность для развития в Frontend разработке.',
+                'cover_letter': 'Great opportunity for development in Frontend development.',
                 'status': 'interview',
                 'score': 92.0,
             },
             {
                 'vacancy': vacancies[2],
                 'candidate': candidates[2],
-                'cover_letter': 'Интересуюсь Full Stack разработкой. Готов к переезду.',
+                'cover_letter': 'Interested in Full Stack development. Ready to relocate.',
                 'status': 'applied',
                 'score': 88.5,
             },
@@ -246,9 +246,9 @@ class Command(BaseCommand):
                 defaults=app_data
             )
             applications.append(application)
-            self.stdout.write(f'Создана заявка: {application.candidate.user.get_full_name()} -> {application.vacancy.title}')
+            self.stdout.write(f'Created application: {application.candidate.user.get_full_name()} -> {application.vacancy.title}')
         
-        # Создание документов
+        # Creating documents
         documents_data = [
             {
                 'owner': candidates[0].user,
@@ -277,9 +277,9 @@ class Command(BaseCommand):
                 doc_type=doc_data['doc_type'],
                 defaults=doc_data
             )
-            self.stdout.write(f'Создан документ: {document.doc_type} для {document.owner.get_full_name()}')
+            self.stdout.write(f'Created document: {document.doc_type} for {document.owner.get_full_name()}')
         
-        # Создание визовых дел
+        # Creating visa cases
         visa_cases_data = [
             {
                 'application': applications[0],
@@ -289,7 +289,7 @@ class Command(BaseCommand):
                     {'step': 'document_review', 'status': 'completed', 'date': timezone.now().isoformat()},
                     {'step': 'background_check', 'status': 'in_progress', 'date': timezone.now().isoformat()},
                 ],
-                'instructions': 'Проверить документы и провести проверку биографии',
+                'instructions': 'Check documents and conduct background check',
             },
             {
                 'application': applications[2],
@@ -299,7 +299,7 @@ class Command(BaseCommand):
                     {'step': 'document_review', 'status': 'completed', 'date': timezone.now().isoformat()},
                     {'step': 'interview_scheduled', 'status': 'completed', 'date': timezone.now().isoformat()},
                 ],
-                'instructions': 'Запланировать интервью с кандидатом',
+                'instructions': 'Schedule interview with candidate',
             },
         ]
         
@@ -308,9 +308,9 @@ class Command(BaseCommand):
                 application=visa_data['application'],
                 defaults=visa_data
             )
-            self.stdout.write(f'Создано визовое дело для заявки: {visa_case.application.id}')
+            self.stdout.write(f'Created visa case for application: {visa_case.application.id}')
         
-        # Создание предложений жилья
+        # Creating housing listings
         housing_data = [
             {
                 'provider_name': 'Cyprus Housing Ltd',
@@ -360,19 +360,19 @@ class Command(BaseCommand):
                 defaults=house_data
             )
             housing_listings.append(housing)
-            self.stdout.write(f'Создано предложение жилья: {housing.address}')
+            self.stdout.write(f'Created housing listing: {housing.address}')
         
-        # Создание предложений по переезду
+        # Creating relocation suggestions
         relocation_suggestions_data = [
             {
                 'application': applications[0],
                 'housing': housing_listings[0],
-                'reason': 'Близко к офису, хорошая транспортная доступность',
+                'reason': 'Close to office, good transport accessibility',
             },
             {
                 'application': applications[2],
                 'housing': housing_listings[1],
-                'reason': 'Современная квартира с видом на море, рядом с работой',
+                'reason': 'Modern apartment with sea view, close to work',
             },
         ]
         
@@ -382,9 +382,9 @@ class Command(BaseCommand):
                 housing=rel_data['housing'],
                 defaults=rel_data
             )
-            self.stdout.write(f'Создано предложение по переезду для заявки: {suggestion.application.id}')
+            self.stdout.write(f'Created relocation suggestion for application: {suggestion.application.id}')
         
-        # Создание оценок расходов
+        # Creating expense estimates
         expense_estimates_data = [
             {
                 'application': applications[0],
@@ -409,36 +409,36 @@ class Command(BaseCommand):
                 application=exp_data['application'],
                 defaults=exp_data
             )
-            self.stdout.write(f'Создана оценка расходов для заявки: {expense.application.id}')
+            self.stdout.write(f'Created expense estimate for application: {expense.application.id}')
         
-        # Создание AI взаимодействий
+        # Creating AI interactions
         ai_interactions_data = [
             {
                 'user': candidates[0].user,
                 'application': applications[0],
                 'role': 'user',
-                'message': 'Какие документы нужны для подачи заявки?',
+                'message': 'What documents are needed to submit an application?',
                 'metadata': {'session_id': 'session_001'},
             },
             {
                 'user': candidates[0].user,
                 'application': applications[0],
                 'role': 'assistant',
-                'message': 'Для подачи заявки вам понадобятся: CV, паспорт, диплом об образовании и справка о несудимости.',
+                'message': 'To submit an application you will need: CV, passport, education diploma and criminal record certificate.',
                 'metadata': {'session_id': 'session_001'},
             },
             {
                 'user': candidates[1].user,
                 'application': applications[2],
                 'role': 'user',
-                'message': 'Когда будет интервью?',
+                'message': 'When will the interview be?',
                 'metadata': {'session_id': 'session_002'},
             },
             {
                 'user': candidates[1].user,
                 'application': applications[2],
                 'role': 'assistant',
-                'message': 'Интервью запланировано на следующую неделю. Вам придет приглашение с деталями.',
+                'message': 'The interview is scheduled for next week. You will receive an invitation with details.',
                 'metadata': {'session_id': 'session_002'},
             },
         ]
@@ -450,22 +450,22 @@ class Command(BaseCommand):
                 message=ai_data['message'],
                 defaults=ai_data
             )
-            self.stdout.write(f'Создано AI взаимодействие: {interaction.role} - {interaction.user.get_full_name()}')
+            self.stdout.write(f'Created AI interaction: {interaction.role} - {interaction.user.get_full_name()}')
         
         self.stdout.write(
             self.style.SUCCESS(
-                f'\n✅ Тестовые данные успешно созданы!\n'
-                f'Создано:\n'
-                f'- Пользователей: {User.objects.count()}\n'
-                f'- Работодателей: {Employer.objects.count()}\n'
-                f'- Кандидатов: {CandidateProfile.objects.count()}\n'
-                f'- Вакансий: {Vacancy.objects.count()}\n'
-                f'- Заявок: {Application.objects.count()}\n'
-                f'- Документов: {Document.objects.count()}\n'
-                f'- Визовых дел: {VisaCase.objects.count()}\n'
-                f'- Предложений жилья: {HousingListing.objects.count()}\n'
-                f'- Предложений по переезду: {RelocationSuggestion.objects.count()}\n'
-                f'- Оценок расходов: {ExpenseEstimate.objects.count()}\n'
-                f'- AI взаимодействий: {AIAssistantInteraction.objects.count()}'
+                f'\n✅ Test data successfully created!\n'
+                f'Created:\n'
+                f'- Users: {User.objects.count()}\n'
+                f'- Employers: {Employer.objects.count()}\n'
+                f'- Candidates: {CandidateProfile.objects.count()}\n'
+                f'- Vacancies: {Vacancy.objects.count()}\n'
+                f'- Applications: {Application.objects.count()}\n'
+                f'- Documents: {Document.objects.count()}\n'
+                f'- Visa Cases: {VisaCase.objects.count()}\n'
+                f'- Housing Listings: {HousingListing.objects.count()}\n'
+                f'- Relocation Suggestions: {RelocationSuggestion.objects.count()}\n'
+                f'- Expense Estimates: {ExpenseEstimate.objects.count()}\n'
+                f'- AI Interactions: {AIAssistantInteraction.objects.count()}'
             )
         )

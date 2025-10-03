@@ -1,0 +1,138 @@
+### BridgeAID API Testing
+### Base URL: http://192.168.0.165:8000/api
+
+### 1. Test Server Connection
+GET http://192.168.0.165:8000/api/
+Content-Type: application/json
+
+###
+
+### 2. User Registration
+POST http://192.168.0.165:8000/api/users/register/
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "testpass123",
+    "password2": "testpass123",
+    "first_name": "Test",
+    "last_name": "User",
+    "phone": "+1234567890"
+}
+
+###
+
+### 3. User Login
+POST http://192.168.0.165:8000/api/users/token/
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "testpass123"
+}
+
+###
+
+### 4. Login with existing test user
+POST http://192.168.0.165:8000/api/users/token/
+Content-Type: application/json
+
+{
+    "email": "candidate1@example.com",
+    "password": "testpass123"
+}
+
+###
+
+### 5. Get User Profile (requires token)
+GET http://192.168.0.165:8000/api/users/me/
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+###
+
+### 6. Get Vacancies
+GET http://192.168.0.165:8000/api/vacancies/
+Content-Type: application/json
+
+###
+
+### 7. Get Applications
+GET http://192.168.0.165:8000/api/applications/
+Content-Type: application/json
+
+###
+
+### 8. Get Dashboard Stats (requires token)
+GET http://192.168.0.165:8000/api/dashboard/stats/
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+###
+
+### 9. Create Employer Profile (requires token)
+POST http://192.168.0.165:8000/api/employers/
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+    "company_name": "Test Company",
+    "contact_email": "contact@testcompany.com",
+    "contact_phone": "+1234567890",
+    "country": "CY"
+}
+
+###
+
+### 10. Create Candidate Profile (requires token)
+POST http://192.168.0.165:8000/api/candidates/
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+    "phone": "+1234567890",
+    "current_country": "TR",
+    "resume": "Test resume content",
+    "skills": ["Python", "Django", "React"]
+}
+
+###
+
+### 11. Test with different email format
+POST http://192.168.0.165:8000/api/users/register/
+Content-Type: application/json
+
+{
+    "email": "testuser@test.com",
+    "password": "password123",
+    "password2": "password123",
+    "first_name": "Test",
+    "last_name": "User"
+}
+
+###
+
+### 12. Check Django Admin
+GET http://192.168.0.165:8000/admin/
+Content-Type: application/json
+
+###
+
+### 13. Test CORS (from browser)
+OPTIONS http://192.168.0.165:8000/api/users/register/
+Content-Type: application/json
+Origin: http://localhost:3000
+
+###
+
+### 14. Test with minimal data
+POST http://192.168.0.165:8000/api/users/register/
+Content-Type: application/json
+
+{
+    "email": "minimal@test.com",
+    "password": "test123",
+    "password2": "test123"
+}
+
+###

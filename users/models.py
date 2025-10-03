@@ -20,7 +20,7 @@ class CustomUserManager(UserManager):
 
     def create_user(self, email, password=None, **extra):
         if not email:
-            raise ValueError("Email обязателен.")
+            raise ValueError("Email is required.")
         if not password:
             raise ValidationError("Password")
         extra.setdefault("is_staff", False)
@@ -31,7 +31,7 @@ class CustomUserManager(UserManager):
         extra.setdefault("is_staff", True)
         extra.setdefault("is_superuser", True)
         if extra.get("is_staff") is not True or extra.get("is_superuser") is not True:
-            raise ValueError("Суперпользователь должен иметь is_staff=True и is_superuser=True.")
+            raise ValueError("Superuser must have is_staff=True and is_superuser=True.")
         return self._create(email, password, **extra)
 
 
